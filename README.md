@@ -1,6 +1,6 @@
 # simplebot
 simplebot 高コスパポンコツロボット
-
+![simplebot_img](https://user-images.githubusercontent.com/20347923/89854247-5be98d00-dbce-11ea-84a8-12687ee7ad05.png)
 ## インストール方法
 1.　まず[ROS](http://wiki.ros.org/ROS/Installation)をインストールしてください。
 
