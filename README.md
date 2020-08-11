@@ -39,7 +39,7 @@ source devel/setup.bash
 `roslaunch simplebot_description simplebot.launch`
 
 ## Licence
-[MIT](https://bitbucket.org/nitt_mix/temple_description/src/master/LICENSE)
+[MIT](https://github.com/yukimakura/simplebot/blob/master/LICENSE)
 
 
 ## Author
