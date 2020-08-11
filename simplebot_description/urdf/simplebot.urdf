@@ -241,7 +241,7 @@
     <joint name="caster_ball_joint" type="fixed">
       <parent link="caster_holder_link"/>
       <child  link="caster_ball_link"/>
-      <origin xyz="0 0 -0.0225" rpy="0 0 1.57"/>
+      <origin xyz="0 0 -0.025" rpy="0 0 1.57"/>
     </joint>
 
     <!-- lidar -->
@@ -313,7 +313,7 @@
       <material>Gazebo/Black</material>
       <sensor type="ray" name="lidar">
         <pose>0 0 0 0 0 0</pose>
-        <visualize>false</visualize>
+        <visualize>true</visualize>
         <update_rate>10</update_rate>
         <ray>
           <scan>
