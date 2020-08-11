@@ -36,7 +36,7 @@ source devel/setup.bash
 をしましょう。
 
 ## launch方法
-`roslaunch simplebot_description simplebot.launch`
+`roslaunch simplebot_description simplebot_cafe.launch`
 
 ## Licence
 [MIT](https://github.com/yukimakura/simplebot/blob/master/LICENSE)
