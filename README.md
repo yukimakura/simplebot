@@ -13,7 +13,7 @@ cd simplebot_ws/src
 catkin_init_workspace   
 ```
 
-3.　構築したワークスペース内にこのプロジェクトをクローンしてください。({ユーザー名} <= 自分のアカウント名で)
+3.　構築したワークスペース内にこのプロジェクトをクローンしてください。
 ```
 git clone https://github.com/yukimakura/simplebot.git
 ```
