@@ -1,5 +1,7 @@
 <launch>
+    <arg name="open_rviz" default="false"/>
 
+    
     <param name="robot_description" textfile="$(find simplebot_description)/urdf/simplebot.urdf" />
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
         <arg name="world_name" value="$(find simplebot_description)/config/cafe.world"/>
@@ -30,7 +32,8 @@
                     respawn="false" output="screen" ns="/simplebot"  >
     </node>
     
-    <node name="rviz_simplebot" pkg="rviz" type="rviz" args="-d $(find simplebot_description)/config/viz.rviz" required="true" />
     <include file="$(find teleop_twist_joy)/launch/teleop.launch" ns="/simplebot/diff_drive_controller"></include>
-
+    <group if="$(arg open_rviz)"> 
+        <node name="rviz_simplebot" pkg="rviz" type="rviz" args="-d $(find simplebot_description)/config/viz.rviz" required="true" />
+    </group>
 </launch>
