@@ -147,9 +147,20 @@ add_executable(${PROJECT_NAME}_node src/simplebot_hardware_node.cpp  src/simpleb
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
+
+message("Architecture: ${CMAKE_HOST_SYSTEM_PROCESSOR}")
+if(${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "x86_64" )
+#amd64
 target_link_libraries(${PROJECT_NAME}_node
   ${catkin_LIBRARIES}
 )
+else(${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "" )
+#Jetson
+target_link_libraries(${PROJECT_NAME}_node
+  ${catkin_LIBRARIES}
+  JetsonGPIO
+)
+endif(${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "" )
 
 #############
 ## Install ##
