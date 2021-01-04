@@ -10,6 +10,8 @@ Panels:
         - /LaserScan1
         - /Map1
         - /Path1
+        - /GlobalCostMap1
+        - /LocalCostMap1
       Splitter Ratio: 0.5
     Tree Height: 958
   - Class: rviz/Selection
@@ -232,6 +234,26 @@ Visualization Manager:
       Topic: /simplebot/diff_drive_controller/move_base/NavfnROS/plan
       Unreliable: false
       Value: true
+    - Alpha: 0.699999988079071
+      Class: rviz/Map
+      Color Scheme: costmap
+      Draw Behind: false
+      Enabled: true
+      Name: GlobalCostMap
+      Topic: /simplebot/diff_drive_controller/move_base/global_costmap/costmap
+      Unreliable: false
+      Use Timestamp: false
+      Value: true
+    - Alpha: 0.699999988079071
+      Class: rviz/Map
+      Color Scheme: costmap
+      Draw Behind: false
+      Enabled: true
+      Name: LocalCostMap
+      Topic: /simplebot/diff_drive_controller/move_base/local_costmap/costmap
+      Unreliable: false
+      Use Timestamp: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -260,7 +282,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 14.441162109375
+      Distance: 5.193540096282959
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
