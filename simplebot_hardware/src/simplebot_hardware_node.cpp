@@ -13,9 +13,9 @@ int main(int argc, char **argv){
   spinner.start();
 
   while(ros::ok()){
-    robot.read(robot.getTime(), robot.getPeriod());
+    robot.update_joints_from_hardware(robot.getTime(), robot.getPeriod());
     cm.update(robot.getTime(), robot.getPeriod());
-    robot.write(robot.getTime(), robot.getPeriod());
+    robot.write_commands_to_hardware(robot.getTime(), robot.getPeriod());
     rate.sleep();
   }
   spinner.stop();

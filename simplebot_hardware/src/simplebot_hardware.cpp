@@ -21,13 +21,32 @@ simplebotHW::simplebotHW(){
     jnt_vel_interface_.registerHandle(vel_handle_2);
 
     registerInterface(&jnt_vel_interface_);
+
+    pinInfo rightPin = {32,21,22};
+    pinInfo leftPin = {33,23,24};
+    driver_ = new simplebotDriver::simplebotDriver(leftPin,leftPin);
+}
+
+simplebotHW::~simplebotHW(){
+    delete driver_;
 }
 
 
-void simplebotHW::read(const ros::Time& time, const ros::Duration& period) {
+
+void simplebotHW::update_joints_from_hardware(const ros::Time& time, const ros::Duration& period) {
+    simplebotDriver::encoderData encData = driver_.readEncoderFromMotor();
+    vel_[0] = ((double)encData.left / (double)oneSpinPulse_) * 2.0 * PI_;
+    vel_[1] = ((double)encData.right / (double)oneSpinPulse_) * 2.0 * PI_;
+
+    pos_[0] += vel_[0];
+    pos_[1] += vel_[1];
+    
+    ROS_INFO_STREAM("feedback from joints: " << vel_[0] << ", " << vel_[1]);
+    
+}
+
+void simplebotHW::write_commands_to_hardware(const ros::Time& time, const ros::Duration& period) {
+    // RobotHWはrad/sで送ってくる！
     ROS_INFO_STREAM("Commands for joints: " << cmd_[0] << ", " << cmd_[1]);
-}
-
-void simplebotHW::write(const ros::Time& time, const ros::Duration& period) {
-    //Update pos_ and vel_
+    //todo ハードウェアへの出力を実装
 }

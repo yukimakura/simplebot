@@ -1,0 +1,25 @@
+<launch>
+    <arg name="open_rviz" default="false"/>
+
+    <param name="robot_description" textfile="$(find simplebot_description)/urdf/simplebot.urdf" />
+
+    <!-- Load joint controller configurations from YAML file to parameter server -->
+    <rosparam file="$(find simplebot_hardware)/config/controller.yaml" command="load"/>
+    
+    <node name="simplebot_hardware_node" pkg="simplebot_hardware" type="simplebot_hardware_node" ns="/simplebot" output="screen"/>
+
+    <!-- load the controllers -->
+    <node name="controller_spawner" pkg="controller_manager"
+                    type="spawner" ns="simplebot" output="screen" 
+                    args="joint_state_controller diff_drive_controller"  />
+    <!-- convert joint states to TF transforms for rviz, etc -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher"
+                    type="robot_state_publisher"
+                    respawn="false" output="screen" ns="/simplebot"  >
+    </node>
+    
+    <include file="$(find teleop_twist_joy)/launch/teleop.launch" ns="/simplebot/diff_drive_controller"></include>
+    <group if="$(arg open_rviz)"> 
+        <node name="rviz_simplebot" pkg="rviz" type="rviz" args="-d $(find simplebot_description)/config/viz.rviz" required="true" />
+    </group>
+</launch>

@@ -14,7 +14,7 @@ simplebot:
     # Wheel separation and diameter. These are both optional.
     # diff_drive_controller will attempt to read either one or both from the
     # URDF if not specified as a parameter
-    wheel_separation : 0.27 # gazeboではタイヤの側面to側面の寸法で実機ではタイヤの中心to中心らしい（ソースは忘れた）
+    wheel_separation : 0.245 # gazeboではタイヤの側面to側面の寸法で実機ではタイヤの中心to中心らしい（ソースは忘れた）
     wheel_radius : 0.0325
 
     # Wheel separation and radius multipliers
@@ -26,8 +26,8 @@ simplebot:
     linear:
       x:
         has_velocity_limits    : true
-        max_velocity           :  0.55 # m/s
-        min_velocity           : -0.55 # m/s
+        max_velocity           :  1.0 # m/s
+        min_velocity           : -1.0 # m/s
         has_acceleration_limits: true
         max_acceleration       :  1.0 # m/s^2
         min_acceleration       : -1.0 # m/s^2
