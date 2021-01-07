@@ -41,12 +41,18 @@ void simplebotHW::update_joints_from_hardware(const ros::Time& time, const ros::
     pos_[0] += vel_[0];
     pos_[1] += vel_[1];
     
-    ROS_INFO_STREAM("feedback from joints: " << vel_[0] << ", " << vel_[1]);
-    
 }
 
 void simplebotHW::write_commands_to_hardware(const ros::Time& time, const ros::Duration& period) {
     // RobotHWはrad/sで送ってくる！
-    ROS_INFO_STREAM("Commands for joints: " << cmd_[0] << ", " << cmd_[1]);
-    //todo ハードウェアへの出力を実装
+    driver_.outputToMotor(rad2pwm_(cmd_[0]),rad2pwm_(cmd_[1]));
+}
+
+int simplebotHW::rad2pwm_(double cmd){
+    int ret;
+    ret = ((double)oneSpinPulse_/((double)maxSpeedPulse_* 2.0 * PI_)) * 100.0 * cmd ;
+    if(((double)maxSpeedPulse_/(double)oneSpinPulse_) * 2.0 * PI_) < cmd){
+        ret = 100;
+    }
+    return ret
 }

@@ -23,13 +23,15 @@ public:
 
 private:
     const double PI_=3.1415926535897932;
-    int oneSpinPulse_ = 500;
+    int oneSpinPulse_ = 1250; //一回転あたりのパルス数
+    int maxSpeedPulse_ = 5850;//全速力で1秒あたりのパルス数
 
     hardware_interface::JointStateInterface jnt_state_interface_;
     hardware_interface::VelocityJointInterface jnt_vel_interface_;
 
     simplebotDriver::simplebotDriver driver_;
 
+    int rad2pwm_(double cmd);
     //以下4つはコントローラーにてupdateされると勝手に更新される
     double cmd_[2];
     double pos_[2];
