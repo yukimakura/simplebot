@@ -33,6 +33,8 @@ private:
   std::shared_ptr<GPIO::PWM> rightPWM_;
   std::shared_ptr<GPIO::PWM> leftPWM_;
 
+  boost::asio::serial_port *serial_;  
+
   pinInfo rightPin_;
   pinInfo leftPin_;
 

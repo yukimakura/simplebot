@@ -24,6 +24,9 @@ simplebotDriver::simplebotDriver(pinInfo left,pinInfo right,std::string serialPo
     rightPWM_->start(0);
     leftPWM_->start(0);
 
+    boost::asio::io_service io;
+    serial_ = new boost::asio::serial_port(io, serialPort_);
+    serial_->set_option(boost::asio::serial_port_base::baud_rate(baudRate_));
     
 }
 
@@ -31,6 +34,8 @@ simplebotDriver::~simplebotDriver(){
     rightPWM_->stop();
     leftPWM_->stop();
     GPIO::cleanup();
+
+    delete serial_;
 }
 
 void simplebotDriver::outputToMotor(int outputDutyLeft,int outputDutyRight){
@@ -44,16 +49,12 @@ void simplebotDriver::outputToMotor(int outputDutyLeft,int outputDutyRight){
 
 encoderData simplebotDriver::readEncoderFromMotor(){
 //todo リクエスト送ったらエンコーダ更新実装（マイコン側要変更）
-    boost::asio::io_service io;
 
-    boost::asio::serial_port serial(io, serialPort_);
-    serial.set_option(boost::asio::serial_port_base::baud_rate(baudRate_));
-
-    boost::asio::write(serial, boost::asio::buffer("request\n"));
+    boost::asio::write(*serial_, boost::asio::buffer("request\n"));
 
     // serial から response_buf に '\n' まで読み込む
     boost::asio::streambuf response_buf;
-    boost::asio::read_until(serial, response_buf, '\n');
+    boost::asio::read_until(*serial_, response_buf, '\n');
     ROS_INFO(boost::asio::buffer_cast<const char*>(response_buf.data()));
 
     try
@@ -66,7 +67,8 @@ encoderData simplebotDriver::readEncoderFromMotor(){
         encoderData retEncData = {0,0};
         return retEncData;
     }
-    
+    encoderData retEncData = {0,0};
+        return retEncData;
 }
 
 void simplebotDriver::outputToMotorDir_(int Duty,pinInfo pin){
