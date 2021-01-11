@@ -7,6 +7,7 @@
 #include <cmath>
 #include <boost/asio.hpp>
 #include "nlohmann/json.hpp"
+#include <ros/ros.h>
 
 typedef struct {
   int pinPWM;

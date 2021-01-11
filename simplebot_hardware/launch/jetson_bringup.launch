@@ -1,0 +1,3 @@
+<launch>
+    <node name="simplebot_hardware_node" pkg="simplebot_hardware" type="simplebot_hardware_node" ns="/simplebot" output="screen"/>
+</launch>

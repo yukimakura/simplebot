@@ -24,11 +24,13 @@ simplebotHW::simplebotHW(){
 
     pinInfo rightPin = {32,21,22};
     pinInfo leftPin = {33,23,24};
-    driver_ = std::make_shared<simplebotDriver>(leftPin,rightPin,"",38400);
+    driver_ = std::make_shared<simplebotDriver>(leftPin,rightPin,"/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_066DFF495649657867072447-if02",38400);
 
 }
 
-
+simplebotHW::~simplebotHW(){
+    driver_->outputToMotor(0,0);
+}
 void simplebotHW::update_joints_from_hardware(const ros::Time& time, const ros::Duration& period) {
     encoderData encData = driver_->readEncoderFromMotor();
     vel_[0] = ((double)encData.left / (double)oneSpinPulse_) * 2.0 * PI_;
@@ -41,6 +43,7 @@ void simplebotHW::update_joints_from_hardware(const ros::Time& time, const ros::
 
 void simplebotHW::write_commands_to_hardware(const ros::Time& time, const ros::Duration& period) {
     // RobotHWはrad/sで送ってくる！
+    ROS_INFO("leftpwm:%d,rightpwm:%d",rad2pwm_(cmd_[0]),rad2pwm_(cmd_[1]));
     driver_->outputToMotor(rad2pwm_(cmd_[0]),rad2pwm_(cmd_[1]));
 }
 

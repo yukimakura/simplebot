@@ -9,10 +9,11 @@ simplebotDriver::simplebotDriver(pinInfo left,pinInfo right,std::string serialPo
 	GPIO::setmode(GPIO::BOARD);
 
 	// set pin as an output pin with optional initial state of HIGH
+    ROS_INFO("rightPin init");
 	GPIO::setup(right.pinPWM, GPIO::OUT, GPIO::LOW);
     GPIO::setup(right.pinDirA, GPIO::OUT, GPIO::LOW);
     GPIO::setup(right.pinDirB, GPIO::OUT, GPIO::LOW);
-
+    ROS_INFO("leftPin init");
     GPIO::setup(left.pinPWM, GPIO::OUT, GPIO::LOW);
     GPIO::setup(left.pinDirA, GPIO::OUT, GPIO::LOW);
     GPIO::setup(left.pinDirB, GPIO::OUT, GPIO::LOW);
@@ -53,10 +54,19 @@ encoderData simplebotDriver::readEncoderFromMotor(){
     // serial から response_buf に '\n' まで読み込む
     boost::asio::streambuf response_buf;
     boost::asio::read_until(serial, response_buf, '\n');
-    auto json = nlohmann::json::parse(boost::asio::buffer_cast<const char*>(response_buf.data()));
+    ROS_INFO(boost::asio::buffer_cast<const char*>(response_buf.data()));
+
+    try
+    {
+        auto json = nlohmann::json::parse(boost::asio::buffer_cast<const char*>(response_buf.data()));
+        encoderData retEncData = {json["left"],json["right"]};
+        return retEncData;
+    }catch (nlohmann::json::exception)
+    {
+        encoderData retEncData = {0,0};
+        return retEncData;
+    }
     
-    encoderData retEncData = {json["left"],json["right"]};
-    return retEncData;
 }
 
 void simplebotDriver::outputToMotorDir_(int Duty,pinInfo pin){

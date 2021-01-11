@@ -13,6 +13,7 @@ class simplebotHW : public hardware_interface::RobotHW
 {
 public:
     simplebotHW();
+    ~simplebotHW();
 
     ros::Time getTime() const {return ros::Time::now();}
     ros::Duration getPeriod() const {return ros::Duration(0.01);}

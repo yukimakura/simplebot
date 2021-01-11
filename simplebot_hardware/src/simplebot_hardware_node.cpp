@@ -16,8 +16,10 @@ int main(int argc, char **argv){
     robot.update_joints_from_hardware(robot.getTime(), robot.getPeriod());
     cm.update(robot.getTime(), robot.getPeriod());
     robot.write_commands_to_hardware(robot.getTime(), robot.getPeriod());
+    ROS_INFO("loop");
     rate.sleep();
   }
+  ROS_INFO("ぬけた！！");
   spinner.stop();
 
   return 0;

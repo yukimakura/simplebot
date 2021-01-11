@@ -18,7 +18,7 @@
                     respawn="false" output="screen" ns="/simplebot"  >
     </node>
     
-    <include file="$(find teleop_twist_joy)/launch/teleop.launch" ns="/simplebot/diff_drive_controller"></include>
+    <!-- <include file="$(find teleop_twist_joy)/launch/teleop.launch" ns="/simplebot/diff_drive_controller"></include> -->
     <group if="$(arg open_rviz)"> 
         <node name="rviz_simplebot" pkg="rviz" type="rviz" args="-d $(find simplebot_description)/config/viz.rviz" required="true" />
     </group>
