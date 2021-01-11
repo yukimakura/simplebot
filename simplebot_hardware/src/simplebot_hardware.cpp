@@ -22,15 +22,15 @@ simplebotHW::simplebotHW(){
 
     registerInterface(&jnt_vel_interface_);
 
-    simplebotDriver::pinInfo rightPin = {32,21,22};
-    simplebotDriver::pinInfo leftPin = {33,23,24};
-    driver_ = std::make_shared<simplebotDriver::simplebotDriver>(leftPin,rightPin,"",38400);
+    pinInfo rightPin = {32,21,22};
+    pinInfo leftPin = {33,23,24};
+    driver_ = std::make_shared<simplebotDriver>(leftPin,rightPin,"",38400);
 
 }
 
 
 void simplebotHW::update_joints_from_hardware(const ros::Time& time, const ros::Duration& period) {
-    simplebotDriver::encoderData encData = driver_->readEncoderFromMotor();
+    encoderData encData = driver_->readEncoderFromMotor();
     vel_[0] = ((double)encData.left / (double)oneSpinPulse_) * 2.0 * PI_;
     vel_[1] = ((double)encData.right / (double)oneSpinPulse_) * 2.0 * PI_;
 

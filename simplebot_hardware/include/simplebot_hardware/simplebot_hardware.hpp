@@ -13,7 +13,7 @@ class simplebotHW : public hardware_interface::RobotHW
 {
 public:
     simplebotHW();
-    
+
     ros::Time getTime() const {return ros::Time::now();}
     ros::Duration getPeriod() const {return ros::Duration(0.01);}
 
@@ -28,7 +28,7 @@ private:
     hardware_interface::JointStateInterface jnt_state_interface_;
     hardware_interface::VelocityJointInterface jnt_vel_interface_;
 
-    std::shared_ptr<simplebotDriver::simplebotDriver> driver_;
+    std::shared_ptr<simplebotDriver> driver_;
 
     int rad2pwm_(double cmd);
     //以下4つはコントローラーにてupdateされると勝手に更新される

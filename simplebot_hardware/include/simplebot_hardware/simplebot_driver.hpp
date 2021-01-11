@@ -8,42 +8,39 @@
 #include <boost/asio.hpp>
 #include "nlohmann/json.hpp"
 
-namespace simplebotDriver{
+typedef struct {
+  int pinPWM;
+  int pinDirA;
+  int pinDirB;
+} pinInfo;
 
-  typedef struct {
-    int pinPWM;
-    int pinDirA;
-    int pinDirB;
-  } pinInfo;
+typedef struct{
+  int left;
+  int right;
+} encoderData;
 
-  typedef struct{
-    int left;
-    int right;
-  } encoderData;
+class simplebotDriver
+{
+public:
+  simplebotDriver(pinInfo left,pinInfo right, std::string serialPort,int baudRate);
+  ~simplebotDriver();
+  void outputToMotor(int outputDutyLeft,int outputDutyRight);
 
-  class simplebotDriver
-  {
-  public:
-    simplebotDriver(pinInfo left,pinInfo right, std::string serialPort,int baudRate);
-    ~simplebotDriver();
+  encoderData readEncoderFromMotor();//todo リクエスト送ったらエンコーダ更新実装（マイコン側要変更）
 
-    void outputToMotor(int outputDutyLeft,int outputDutyRight);
+private:
+  std::shared_ptr<GPIO::PWM> rightPWM_;
+  std::shared_ptr<GPIO::PWM> leftPWM_;
 
-    encoderData readEncoderFromMotor();//todo リクエスト送ったらエンコーダ更新実装（マイコン側要変更）
+  pinInfo rightPin_;
+  pinInfo leftPin_;
 
-  private:
-    std::shared_ptr<GPIO::PWM> rightPWM_;
-    std::shared_ptr<GPIO::PWM> leftPWM_;
+  std::string serialPort_;
+  int baudRate_;
+  
 
-    pinInfo rightPin_;
-    pinInfo leftPin_;
+  void outputToMotorDir_(int Duty,pinInfo pin);
+};
 
-    std::string serialPort_;
-    int baudRate_;
-    
 
-    void outputToMotorDir_(pinInfo);
-  };
-
-}
 #endif //SIMPLEBOT_DRIVER_HPP

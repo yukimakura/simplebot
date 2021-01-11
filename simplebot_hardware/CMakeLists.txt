@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0.2)
 project(simplebot_hardware)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -134,7 +134,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(${PROJECT_NAME}_node src/simplebot_hardware_node.cpp  src/simplebot_hardware.cpp)
+add_executable(${PROJECT_NAME}_node src/simplebot_hardware_node.cpp  src/simplebot_hardware.cpp src/simplebot_driver.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the

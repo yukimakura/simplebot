@@ -1,5 +1,4 @@
 #include "simplebot_hardware/simplebot_driver.hpp"
-using namespace simplebotDriver;
 
 
 simplebotDriver::simplebotDriver(pinInfo left,pinInfo right,std::string serialPort,int baudRate)
@@ -19,25 +18,26 @@ simplebotDriver::simplebotDriver(pinInfo left,pinInfo right,std::string serialPo
     GPIO::setup(left.pinDirB, GPIO::OUT, GPIO::LOW);
 
     
-    rightPWM_ = new GPIO::PWM(right.pinPWM, 50);
-    leftPWM_ = new GPIO::PWM(left.pinPWM, 50);
-    rightPWM_.start(0);
-    leftPWM_.start(0);
+    rightPWM_ = std::make_shared<GPIO::PWM>(right.pinPWM, 50);
+    leftPWM_ = std::make_shared<GPIO::PWM>(left.pinPWM, 50);
+    rightPWM_->start(0);
+    leftPWM_->start(0);
 
     
 }
 
 simplebotDriver::~simplebotDriver(){
-    rightPWM_.stop();
-    leftPWM_.stop();
+    rightPWM_->stop();
+    leftPWM_->stop();
     GPIO::cleanup();
 }
+
 void simplebotDriver::outputToMotor(int outputDutyLeft,int outputDutyRight){
     outputToMotorDir_(outputDutyLeft,leftPin_);
     outputToMotorDir_(outputDutyRight,rightPin_);
 
-    leftPWM_.ChangeDutyCycle(std::abs(outputDutyLeft));
-    rightPWM_.ChangeDutyCycle(std::abs(outputDutyRight));
+    leftPWM_->ChangeDutyCycle(std::abs(outputDutyLeft));
+    rightPWM_->ChangeDutyCycle(std::abs(outputDutyRight));
 
 }
 
@@ -59,7 +59,7 @@ encoderData simplebotDriver::readEncoderFromMotor(){
     return retEncData;
 }
 
-void outputToMotorDir_(int Duty,pinInfo pin){
+void simplebotDriver::outputToMotorDir_(int Duty,pinInfo pin){
     if(Duty < 0){
         GPIO::output(pin.pinDirA, GPIO::HIGH);
         GPIO::output(pin.pinDirB, GPIO::LOW);
