@@ -24,7 +24,7 @@ namespace simplebotDriver{
   class simplebotDriver
   {
   public:
-    simplebotDriver(pinInfo right,pinInfo left);
+    simplebotDriver(pinInfo left,pinInfo right, std::string serialPort,int baudRate);
     ~simplebotDriver();
 
     void outputToMotor(int outputDutyLeft,int outputDutyRight);
@@ -32,8 +32,8 @@ namespace simplebotDriver{
     encoderData readEncoderFromMotor();//todo リクエスト送ったらエンコーダ更新実装（マイコン側要変更）
 
   private:
-    GPIO::PWM rightPWM_;
-    GPIO::PWM leftPWM_;
+    std::shared_ptr<GPIO::PWM> rightPWM_;
+    std::shared_ptr<GPIO::PWM> leftPWM_;
 
     pinInfo rightPin_;
     pinInfo leftPin_;

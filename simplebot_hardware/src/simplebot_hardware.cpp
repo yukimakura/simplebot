@@ -22,19 +22,15 @@ simplebotHW::simplebotHW(){
 
     registerInterface(&jnt_vel_interface_);
 
-    pinInfo rightPin = {32,21,22};
-    pinInfo leftPin = {33,23,24};
-    driver_ = new simplebotDriver::simplebotDriver(leftPin,leftPin);
-}
+    simplebotDriver::pinInfo rightPin = {32,21,22};
+    simplebotDriver::pinInfo leftPin = {33,23,24};
+    driver_ = std::make_shared<simplebotDriver::simplebotDriver>(leftPin,rightPin,"",38400);
 
-simplebotHW::~simplebotHW(){
-    delete driver_;
 }
-
 
 
 void simplebotHW::update_joints_from_hardware(const ros::Time& time, const ros::Duration& period) {
-    simplebotDriver::encoderData encData = driver_.readEncoderFromMotor();
+    simplebotDriver::encoderData encData = driver_->readEncoderFromMotor();
     vel_[0] = ((double)encData.left / (double)oneSpinPulse_) * 2.0 * PI_;
     vel_[1] = ((double)encData.right / (double)oneSpinPulse_) * 2.0 * PI_;
 
@@ -45,14 +41,14 @@ void simplebotHW::update_joints_from_hardware(const ros::Time& time, const ros::
 
 void simplebotHW::write_commands_to_hardware(const ros::Time& time, const ros::Duration& period) {
     // RobotHWはrad/sで送ってくる！
-    driver_.outputToMotor(rad2pwm_(cmd_[0]),rad2pwm_(cmd_[1]));
+    driver_->outputToMotor(rad2pwm_(cmd_[0]),rad2pwm_(cmd_[1]));
 }
 
 int simplebotHW::rad2pwm_(double cmd){
     int ret;
     ret = ((double)oneSpinPulse_/((double)maxSpeedPulse_* 2.0 * PI_)) * 100.0 * cmd ;
-    if(((double)maxSpeedPulse_/(double)oneSpinPulse_) * 2.0 * PI_) < cmd){
+    if((((double)maxSpeedPulse_/(double)oneSpinPulse_) * 2.0 * PI_) < cmd){
         ret = 100;
     }
-    return ret
+    return ret;
 }

@@ -2,7 +2,7 @@
 using namespace simplebotDriver;
 
 
-simplebotDriver::simplebotDriver(pinInfo right,pinInfo left,std::string serialPort,int baudRate)
+simplebotDriver::simplebotDriver(pinInfo left,pinInfo right,std::string serialPort,int baudRate)
     :rightPin_(right),leftPin_(left),serialPort_(serialPort),baudRate_(baudRate)
 {
     // Pin Setup. 
@@ -28,13 +28,9 @@ simplebotDriver::simplebotDriver(pinInfo right,pinInfo left,std::string serialPo
 }
 
 simplebotDriver::~simplebotDriver(){
-    
     rightPWM_.stop();
     leftPWM_.stop();
     GPIO::cleanup();
-
-    delete rightPWM_;
-    delete leftPWM_;
 }
 void simplebotDriver::outputToMotor(int outputDutyLeft,int outputDutyRight){
     outputToMotorDir_(outputDutyLeft,leftPin_);
