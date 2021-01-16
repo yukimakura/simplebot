@@ -1,0 +1,1 @@
+KERNEL=="ttyACM*", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="374b", GROUP="dialout", MODE="0666"
