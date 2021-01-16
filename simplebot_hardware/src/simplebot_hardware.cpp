@@ -5,6 +5,9 @@ simplebotHW::simplebotHW(){
     vel_[0] = 0.0; vel_[1] = 0.0;
     eff_[0] = 0.0; eff_[1] = 0.0;
     cmd_[0] = 0.0; cmd_[1] = 0.0;
+    dynamic_reconfigure::Server<simplebot_hardware::HardwareParameterConfig>::CallbackType f;
+    f = boost::bind(&simplebotHW::dyn_callback_,this, _1, _2);
+    dyn_server_.setCallback(f);
 
     hardware_interface::JointStateHandle state_handle_1("wheel_left_joint", &pos_[0], &vel_[0], &eff_[0]);
     jnt_state_interface_.registerHandle(state_handle_1);
@@ -57,3 +60,10 @@ int simplebotHW::rad2pwm_(double cmd){
     }
     return ret;
 }
+
+void simplebotHW::dyn_callback_(simplebot_hardware::HardwareParameterConfig& config, uint32_t level){
+    oneSpinPulse_ = config.oneSpinPulse;
+    maxSpeedPulse_ = config.maxSpeedPulse;
+    ROS_INFO("dynamic reconfigure (oneSpinPulse : %d ,maxSpeedPulse : %d)",oneSpinPulse_,maxSpeedPulse_);
+}
+    

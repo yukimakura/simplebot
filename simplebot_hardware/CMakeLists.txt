@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   hardware_interface
   roscpp
   sensor_msgs
+  dynamic_reconfigure
 )
 
 ## System dependencies are found with CMake's conventions
@@ -89,13 +90,12 @@ find_package(catkin REQUIRED COMPONENTS
 ##     and list every .cfg file to be processed
 
 ## Generate dynamic reconfigure parameters in the 'cfg' folder
-# generate_dynamic_reconfigure_options(
-#   cfg/DynReconf1.cfg
-#   cfg/DynReconf2.cfg
-# )
+generate_dynamic_reconfigure_options(
+  config/HardwareParameter.cfg
+)
 
 ###################################
-## catkin specific configuration ##
+## catkin specific configurHardwareParameter.cfgaHardwareParameter.cfgtion ##
 ###################################
 ## The catkin_package macro generates cmake config files for your package
 ## Declare things to be passed to dependent projects
@@ -106,7 +106,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES simplebot_hardware
-  CATKIN_DEPENDS controller_manager hardware_interface roscpp sensor_msgs
+  CATKIN_DEPENDS controller_manager hardware_interface roscpp sensor_msgs dynamic_reconfigure
   DEPENDS system_lib
 )
 
@@ -144,7 +144,7 @@ add_executable(${PROJECT_NAME}_node src/simplebot_hardware_node.cpp  src/simpleb
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 
