@@ -1,3 +1,6 @@
 <launch>
-    <node name="simplebot_hardware_node" pkg="simplebot_hardware" type="simplebot_hardware_node" ns="/simplebot" output="screen"/>
+    <node name="simplebot_hardware_node" pkg="simplebot_hardware" type="simplebot_hardware_node" ns="/simplebot" output="screen">
+        <param name="oneSpinPulse" value="860"/>
+        <param name="maxSpeedPulse" value="5000"/>
+    </node>
 </launch>
