@@ -33,9 +33,11 @@ simplebotHW::~simplebotHW(){
 }
 void simplebotHW::update_joints_from_hardware(const ros::Time& time, const ros::Duration& period) {
     encoderData encData = driver_->readEncoderFromMotor();
-    vel_[0] = ((double)encData.left / (double)oneSpinPulse_) * 2.0 * PI_;
-    vel_[1] = ((double)encData.right / (double)oneSpinPulse_) * 2.0 * PI_;
-
+    //ROS_INFO("leftenc:%d,rightenc:%d",encData.left,encData.right);
+    //ROS_INFO("onespinpulse:%d,left / onespin : %f",oneSpinPulse_,((double)(encData.left) / (double)(oneSpinPulse_)));
+    vel_[0] = ((double)(encData.left) / (double)(oneSpinPulse_)) * 2.0 * PI_;
+    vel_[1] = ((double)(encData.right) / (double)(oneSpinPulse_)) * 2.0 * PI_;
+    //ROS_INFO("leftvel:%f,rightvel:%f",vel_[0],vel_[1]);
     pos_[0] += vel_[0];
     pos_[1] += vel_[1];
     
@@ -43,7 +45,7 @@ void simplebotHW::update_joints_from_hardware(const ros::Time& time, const ros::
 
 void simplebotHW::write_commands_to_hardware(const ros::Time& time, const ros::Duration& period) {
     // RobotHWはrad/sで送ってくる！
-    ROS_INFO("leftpwm:%d,rightpwm:%d",rad2pwm_(cmd_[0]),rad2pwm_(cmd_[1]));
+    //ROS_INFO("leftpwm:%d,rightpwm:%d",rad2pwm_(cmd_[0]),rad2pwm_(cmd_[1]));
     driver_->outputToMotor(rad2pwm_(cmd_[0]),rad2pwm_(cmd_[1]));
 }
 

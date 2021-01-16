@@ -55,20 +55,18 @@ encoderData simplebotDriver::readEncoderFromMotor(){
     // serial から response_buf に '\n' まで読み込む
     boost::asio::streambuf response_buf;
     boost::asio::read_until(*serial_, response_buf, '\n');
-    ROS_INFO(boost::asio::buffer_cast<const char*>(response_buf.data()));
 
     try
     {
-        auto json = nlohmann::json::parse(boost::asio::buffer_cast<const char*>(response_buf.data()));
-        encoderData retEncData = {json["left"],json["right"]};
+        auto json = nlohmann::json::parse(std::string(boost::asio::buffer_cast<const char*>(response_buf.data())));
+        encoderData retEncData = {json["motor1"],json["motor2"]};
         return retEncData;
     }catch (nlohmann::json::exception)
     {
+        ROS_INFO("Json Parse Failed %s",boost::asio::buffer_cast<const char*>(response_buf.data()));
         encoderData retEncData = {0,0};
         return retEncData;
     }
-    encoderData retEncData = {0,0};
-        return retEncData;
 }
 
 void simplebotDriver::outputToMotorDir_(int Duty,pinInfo pin){
