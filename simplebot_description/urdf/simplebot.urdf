@@ -10,7 +10,7 @@
         </geometry>
         <origin xyz="0 0 0" rpy="0 0 3.14"/>
           <material name="red">
-          <color rgba="1.0 0.0 0.0 2.0"/>
+          <!-- <color rgba="1.0 0.0 0.0 1.0"/> -->
         </material>
 
       </visual>
@@ -36,7 +36,7 @@
         </geometry>
         <origin xyz="0 0 0" rpy="0 0 0"/>
           <material name="red">
-          <color rgba="1.0 0.0 0.0 2.0"/>
+          <!-- <color rgba="1.0 0.0 0.0 1.0"/> -->
         </material>
 
       </visual>
@@ -62,7 +62,7 @@
         </geometry>
         <origin xyz="0 0 0" rpy="0 0 0"/>
           <material name="red">
-          <color rgba="1.0 0.0 0.0 2.0"/>
+          <!-- <color rgba="1.0 0.0 0.0 1.0"/> -->
         </material>
 
       </visual>
@@ -88,7 +88,7 @@
         </geometry>
         <origin xyz="0 0 0" rpy="0 0 0"/>
           <material name="red">
-          <color rgba="1.0 0.0 0.0 2.0"/>
+          <!-- <color rgba="1.0 0.0 0.0 1.0"/> -->
         </material>
 
       </visual>
@@ -113,7 +113,7 @@
           <mesh filename="package://simplebot_description/dae/base_board.dae" />
         </geometry>
           <material name="red">
-          <color rgba="1.0 0.0 0.0 2.0"/>
+          <!-- <color rgba="1.0 0.0 0.0 1.0"/> -->
         </material>
       </visual>
       <collision>
@@ -143,7 +143,7 @@
           <cylinder length="0.04" radius="0.02"/>
         </geometry>
           <material name="red">
-          <color rgba="1.0 0.0 0.0 2.0"/>
+          <!-- <color rgba="1.0 0.0 0.0 1.0"/> -->
         </material>
       </visual>
 
@@ -155,7 +155,7 @@
       
     <inertial>
       <origin xyz="0 0 0"/>
-      <mass value="0.05"/>
+      <mass value="0.05"/>urdf
       <inertia ixx="0.000011666" ixy="0" ixz="0" iyy="0.000011666"  iyz="0" izz="0.000011666"/>
     </inertial>
 
@@ -252,9 +252,27 @@
     </joint>
 
 
-    <!-- transmission -->
+    <!-- ros2 control -->
 
-    <transmission name="wheel_right_trans">
+    <ros2_control name="${name}" type="system">
+      <joint name="wheel_left_trans">
+        <command_interface name="velocity">
+          <param name="min">-1</param>
+          <param name="max">1</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="wheel_right_joint">
+        <command_interface name="velocity">
+          <param name="min">-1</param>
+          <param name="max">1</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+    </ros2_control>
+    <!-- <transmission name="wheel_right_trans">
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="wheel_right_joint">
         <hardwareInterface>VelocityJointInterface</hardwareInterface>
@@ -269,18 +287,20 @@
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="wheel_left_joint">
         <hardwareInterface>VelocityJointInterface</hardwareInterface>
-      </joint>
-      <actuator name="wheel_left_motor">
+      </joint>urdf
+      <actuator name="wheel_lurdfeft_motor">
         <hardwareInterface>VelocityJointInterface</hardwareInterface>
         <mechanicalReduction>30</mechanicalReduction>
       </actuator>
-    </transmission>
+    </transmission> -->
+
+
 
     <!-- gazebo -->
 
     <gazebo>
-      <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-        <robotNamespace>simplebot</robotNamespace>
+      <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+        <parameters>$(find simplebot_description)/config/controller.yaml</parameters>
       </plugin>
     </gazebo>
 

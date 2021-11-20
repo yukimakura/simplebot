@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
-<package format="2">
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
   <name>simplebot_description</name>
-  <version>0.0.1</version>
-  <description>The simplebot_description</description>
+  <version>0.0.0</version>
+  <description>TODO: Package description</description>
+  <maintainer email="yukimakura@todo.todo">yukimakura</maintainer>
+  <license>TODO: License declaration</license>
 
-  <license>MIT</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <author email="yukimakura86@gmail.com">yukimakura</author>
-  <maintainer email="yukimakura86@gmail.com">yukimakura</maintainer>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
 
-  <buildtool_depend>catkin</buildtool_depend>
-  <exec_depend>teleop_twist_joy</exec_depend>
-  <exec_depend>gmapping</exec_depend>
   <export>
-
+    <build_type>ament_cmake</build_type>
   </export>
 </package>
