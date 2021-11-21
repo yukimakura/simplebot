@@ -22,53 +22,27 @@ def generate_launch_description():
     simplebot_description_path = os.path.join(
         get_package_share_directory('simplebot_description'))
 
-    urdf_file = os.path.join(simplebot_description_path,
+    robot_desc = xacro.process_file(
+        os.path.join(simplebot_description_path,
                               'urdf',
-                              'simplebot.urdf')
+                              'simplebot_gazebo.urdf.xacro'))
 
-    with open(urdf_file, 'r') as infp:
-        robot_desc = infp.read()
 
     # Subscribe to the joint states of the robot, and publish the 3D pose of each link.
     start_robot_state_publisher_cmd = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
-        parameters=[{'robot_description': robot_desc}],
-        arguments=[urdf_file])
+        output='screen',
+        parameters=[{
+            'robot_description': robot_desc.toxml(), 
+            'use_sim_time': True}])
 
     spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
                         arguments=['-topic', 'robot_description',"-entity", "simplebot"],
                         output='screen')
 
-    load_joint_state_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'start',
-             'joint_state_broadcaster'],
-        output='screen'
-    )
-
-    load_diff_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'start', 'diff_controller'],
-        output='screen'
-    )
-
-    # load_imu_sensor_broadcaster = ExecuteProcess(
-    #     cmd=['ros2', 'control', 'load_controller', 'imu_sensor_broadcaster'],
-    #     output='screen'
-    # )
 
     return LaunchDescription([
-        RegisterEventHandler(
-            event_handler=OnProcessExit(
-                target_action=spawn_entity,
-                on_exit=[load_joint_state_controller],
-            )
-        ),
-        RegisterEventHandler(
-            event_handler=OnProcessExit(
-                target_action=load_joint_state_controller,
-                on_exit=[load_diff_controller],
-            )
-        ),
         gazebo,
         start_robot_state_publisher_cmd,
         spawn_entity,

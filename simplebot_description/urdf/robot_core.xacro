@@ -6,7 +6,8 @@
     <link name="wheel_left_link">
       <visual>
         <geometry>
-          <mesh filename="package://simplebot_description/dae/wheel.dae" />
+          <!-- <mesh filename="package://simplebot_description/dae/wheel.dae" /> -->
+          <cylinder length="0.025" radius="0.0325"/>
         </geometry>
         <origin xyz="0 0 0" rpy="0 0 3.14"/>
           <material name="red">
@@ -32,7 +33,8 @@
     <link name="wheel_right_link">
       <visual>
         <geometry>
-          <mesh filename="package://simplebot_description/dae/wheel.dae" />
+          <!-- <mesh filename="package://simplebot_description/dae/wheel.dae" /> -->
+          <cylinder length="0.025" radius="0.0325"/>
         </geometry>
         <origin xyz="0 0 0" rpy="0 0 0"/>
           <material name="red">
@@ -58,7 +60,8 @@
     <link name="motor_left_link">
       <visual>
         <geometry>
-          <mesh filename="package://simplebot_description/dae/motor.dae" />
+          <!-- <mesh filename="package://simplebot_description/dae/motor.dae" /> -->
+          <cylinder length="0.06" radius="0.02"/>
         </geometry>
         <origin xyz="0 0 0" rpy="0 0 0"/>
           <material name="red">
@@ -84,7 +87,8 @@
     <link name="motor_right_link">
       <visual>
         <geometry>
-          <mesh filename="package://simplebot_description/dae/motor.dae" />
+          <!-- <mesh filename="package://simplebot_description/dae/motor.dae" /> -->
+          <cylinder length="0.06" radius="0.02"/>
         </geometry>
         <origin xyz="0 0 0" rpy="0 0 0"/>
           <material name="red">
@@ -110,7 +114,8 @@
     <link name="body_link">
       <visual>
         <geometry>
-          <mesh filename="package://simplebot_description/dae/base_board.dae" />
+          <!-- <mesh filename="package://simplebot_description/dae/base_board.dae" /> -->
+          <box size="0.21 0.297 0.004"/>
         </geometry>
           <material name="red">
           <!-- <color rgba="1.0 0.0 0.0 1.0"/> -->
@@ -155,7 +160,7 @@
       
     <inertial>
       <origin xyz="0 0 0"/>
-      <mass value="0.05"/>urdf
+      <mass value="0.05"/>
       <inertia ixx="0.000011666" ixy="0" ixz="0" iyy="0.000011666"  iyz="0" izz="0.000011666"/>
     </inertial>
 
@@ -183,24 +188,6 @@
       <inertia ixx="0.0000045" ixy="0" ixz="0" iyy="0.0000045"  iyz="0" izz="0.0000045"/>
     </inertial>
 
-    </link>
-
-    <!-- lidar -->
-    
-    <link name="lidar_link">
-      <visual>
-        <origin xyz="0 0 0" rpy="0 0 0" />
-        <geometry>
-          <cylinder radius="0.02" length="0.02" />
-        </geometry>
-        <material name="red" />
-      </visual>
-      <collision>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <cylinder radius="0.02" length="0.02" />
-        </geometry>
-      </collision>
     </link>
 
     <!-- joint -->
@@ -244,66 +231,7 @@
       <origin xyz="0 0 -0.025" rpy="0 0 1.57"/>
     </joint>
 
-    <!-- lidar -->
-    <joint name="lidar_joint" type="fixed">
-      <parent link="body_link"/>
-      <child  link="lidar_link"/>
-      <origin xyz="0 0.12 0.0125" rpy="0 0 0"/>
-    </joint>
-
-
-    <!-- ros2 control -->
-
-    <ros2_control name="${name}" type="system">
-      <joint name="wheel_left_trans">
-        <command_interface name="velocity">
-          <param name="min">-1</param>
-          <param name="max">1</param>
-        </command_interface>
-        <state_interface name="position"/>
-        <state_interface name="velocity"/>
-      </joint>
-      <joint name="wheel_right_joint">
-        <command_interface name="velocity">
-          <param name="min">-1</param>
-          <param name="max">1</param>
-        </command_interface>
-        <state_interface name="position"/>
-        <state_interface name="velocity"/>
-      </joint>
-    </ros2_control>
-    <!-- <transmission name="wheel_right_trans">
-      <type>transmission_interface/SimpleTransmission</type>
-      <joint name="wheel_right_joint">
-        <hardwareInterface>VelocityJointInterface</hardwareInterface>
-      </joint>
-      <actuator name="wheel_right_motor">
-        <hardwareInterface>VelocityJointInterface</hardwareInterface>
-        <mechanicalReduction>30</mechanicalReduction>
-      </actuator>
-    </transmission>
-
-    <transmission name="wheel_left_trans">
-      <type>transmission_interface/SimpleTransmission</type>
-      <joint name="wheel_left_joint">
-        <hardwareInterface>VelocityJointInterface</hardwareInterface>
-      </joint>urdf
-      <actuator name="wheel_lurdfeft_motor">
-        <hardwareInterface>VelocityJointInterface</hardwareInterface>
-        <mechanicalReduction>30</mechanicalReduction>
-      </actuator>
-    </transmission> -->
-
-
-
-    <!-- gazebo -->
-
-    <gazebo>
-      <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
-        <parameters>$(find simplebot_description)/config/controller.yaml</parameters>
-      </plugin>
-    </gazebo>
-
+    
     <gazebo reference="wheel_right_link">
       <selfCollide>true</selfCollide>
       <mu1 value="0.75" />
@@ -326,40 +254,6 @@
       <selfCollide>true</selfCollide>
       <mu1 value="0.0" />
       <mu2 value="0.0" />
-    </gazebo>
-
-    
-    <gazebo reference="lidar_link">
-      <material>Gazebo/Black</material>
-      <sensor type="ray" name="lidar">
-        <pose>0 0 0 0 0 0</pose>
-        <visualize>true</visualize>
-        <update_rate>10</update_rate>
-        <ray>
-          <scan>
-            <horizontal>
-              <samples>400</samples>
-              <resolution>1</resolution>
-              <min_angle>-3.14</min_angle>
-              <max_angle>3.14</max_angle>
-            </horizontal>
-          </scan>
-          <range>
-            <min>0.10</min>
-            <max>7.0</max>
-            <resolution>0.75</resolution>
-          </range>
-          <noise>
-            <type>gaussian</type>
-            <mean>0.0</mean>
-            <stddev>0.01</stddev>
-          </noise>
-        </ray>
-        <plugin name="gazebo_ros_lidar_controller" filename="libgazebo_ros_laser.so">
-          <topicName>/scan</topicName>
-          <frameName>lidar_link</frameName>
-        </plugin>
-      </sensor>
     </gazebo>
 
 
