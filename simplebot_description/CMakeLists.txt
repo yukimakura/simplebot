@@ -14,6 +14,8 @@ install(DIRECTORY
   config
   urdf
   dae
+  rviz
+  worlds
   DESTINATION share/${PROJECT_NAME}/
 )
 

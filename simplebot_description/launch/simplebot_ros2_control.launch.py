@@ -41,9 +41,14 @@ def generate_launch_description():
                         arguments=['-topic', 'robot_description',"-entity", "simplebot"],
                         output='screen')
 
+    joint_state_publisher_node = Node(
+        package="joint_state_publisher_gui",
+        executable="joint_state_publisher_gui",
+    )
 
     return LaunchDescription([
         gazebo,
         start_robot_state_publisher_cmd,
         spawn_entity,
+        joint_state_publisher_node
     ])
